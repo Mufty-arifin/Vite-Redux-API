@@ -1,18 +1,7 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import "./index.css";
-const App = () => {
-  return (
-    <div className="wrapp">
-      <Router>
-        <Routes>
-          <Route axact path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </Router>
-    </div>
-  );
-};
+import { useRoutes } from "react-router-dom";
+import { routes } from "./routes";
 
-export default App;
+export default function App() {
+  const element = useRoutes(routes   );
+  return element;
+}

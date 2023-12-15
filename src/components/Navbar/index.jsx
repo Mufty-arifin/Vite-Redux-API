@@ -1,3 +1,4 @@
+
 const Navbar = () => {
     const logoutUser = () => {
         localStorage.removeItem("token");

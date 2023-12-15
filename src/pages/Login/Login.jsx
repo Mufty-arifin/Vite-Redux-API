@@ -1,8 +1,34 @@
 import img1 from "../../assets/img/bg-login.jpg";
 import { useState } from "react";
-
+import { fetchLogin } from "../../reducer/authSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const dispatch = useDispatch();
+  const Navigate = useNavigate();
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+
+    try {
+      // Assume fetchLogin is an asynchronous function that returns a promise
+      await dispatch(fetchLogin({ email, password }));
+      setErrorMessage("");
+      setSuccessMessage("Login berhasil!");
+      Navigate("/");
+      
+    } catch (error) {
+      console.error("Login gagal:", error.message);
+      setErrorMessage("Login gagal: " + error.message);
+      setSuccessMessage("");
+    }
+  };
 
   const togglePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
@@ -13,18 +39,35 @@ const Login = () => {
         <div className="md:w-1/2 px-16">
           <h2 className="text-2xl font-bold text-[#002D74]">Login</h2>
           <p className="text-sm mt-4">Login to your account</p>
-
-          <form action="" className="flex flex-col gap-4">
+          {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
+          {successMessage && (
+            <div style={{ color: "green" }}>{successMessage}</div>
+          )}
+          <form
+            action=""
+            className="flex flex-col gap-4"
+            onSubmit={handleLogin}
+          >
             <input
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
               type="email"
               name="email"
+              id="email"
               placeholder="Email"
               className="border rounded-xl p-2 mt-8"
             />
             <div className="relative">
               <input
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
                 type={passwordVisibility ? "text" : "password"}
                 name="password"
+                id="password"
                 placeholder="Password"
                 className="border rounded-xl p-2 w-full"
               />
@@ -57,7 +100,10 @@ const Login = () => {
               </span>
             </div>
 
-            <button className="bg-[#002D74] rounded-xl text-white py-2 w-full hover:scale-105 duration-300">
+            <button
+              type="submit"
+              className="bg-[#002D74] rounded-xl text-white py-2 w-full hover:scale-105 duration-300"
+            >
               Login
             </button>
           </form>
