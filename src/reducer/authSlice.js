@@ -1,12 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const initialState = {
-  msg: "",
-  user: "",
-  token: "",
-  loading: false,
-  error: "",
-};
+
 export const fetchLogin = createAsyncThunk("fetchLogin", async (body) => {
   const res = await fetch("https://reqres.in/api/login", {
     method: "POST",
@@ -19,7 +13,13 @@ export const fetchLogin = createAsyncThunk("fetchLogin", async (body) => {
 });
 const authSlice = createSlice({
   name: "user",
-  initialState,
+  initialState:{
+    msg: "",
+    user: "",
+    token: "",
+    loading: false,
+    error: "",
+  },
   reducers: {
     addToken: (state) => {
       state.token = localStorage.getItem("token");
