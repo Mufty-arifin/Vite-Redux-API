@@ -5,28 +5,20 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+
 
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const handleLogin = async (event) => {
     event.preventDefault();
-
-
+    const email = event.target.email.value;
+    const password = event.target.password.value;
     try {
       // Assume fetchLogin is an asynchronous function that returns a promise
       await dispatch(fetchLogin({ email, password }));
-      setErrorMessage("");
-      setSuccessMessage("Login berhasil!");
       Navigate("/");
-      
     } catch (error) {
       console.error("Login gagal:", error.message);
-      setErrorMessage("Login gagal: " + error.message);
-      setSuccessMessage("");
     }
   };
 
@@ -39,20 +31,13 @@ const Login = () => {
         <div className="md:w-1/2 px-16">
           <h2 className="text-2xl font-bold text-[#002D74]">Login</h2>
           <p className="text-sm mt-4">Login to your account</p>
-          {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
-          {successMessage && (
-            <div style={{ color: "green" }}>{successMessage}</div>
-          )}
           <form
             action=""
             className="flex flex-col gap-4"
             onSubmit={handleLogin}
           >
             <input
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
+            
               type="email"
               name="email"
               id="email"
@@ -61,10 +46,7 @@ const Login = () => {
             />
             <div className="relative">
               <input
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
+               
                 type={passwordVisibility ? "text" : "password"}
                 name="password"
                 id="password"
